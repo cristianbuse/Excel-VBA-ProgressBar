@@ -1,0 +1,3 @@
+[submodule "submodules/VBA-MemoryTools"]
+	path = submodules/VBA-MemoryTools
+	url = https://github.com/cristianbuse/VBA-MemoryTools
