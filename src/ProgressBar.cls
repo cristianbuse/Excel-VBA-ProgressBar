@@ -329,6 +329,9 @@ End Property
 '*******************************************************************************
 Public Sub CenterOnApplication()
     If Application.WindowState = xlMinimized Then Exit Sub
+    If ThisWorkbook.Windows.Count > 0 Then
+        If ThisWorkbook.Windows(1).WindowState = xlMinimized Then Exit Sub
+    End If
     '
     Dim leftPosition As Single
     Dim topPosition As Single
