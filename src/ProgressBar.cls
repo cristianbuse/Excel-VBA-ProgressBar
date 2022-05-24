@@ -560,7 +560,7 @@ Private Sub RunOnBook(Optional ByVal Missing As Variant)
         , m_args(25), m_args(26), m_args(27), m_args(28), m_args(29))
 End Sub
 Private Function FullProcedureName() As String
-    FullProcedureName = "'" & m_targetBook.Name & "'!" & m_procedure
+    FullProcedureName = "'" & Replace(m_targetBook.Name, "'", "''") & "'!" & m_procedure
 End Function
 #If Mac Then
 Private Sub RunOnObject(ByRef args() As Variant)
