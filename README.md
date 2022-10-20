@@ -1,6 +1,8 @@
 # Excel-VBA-ProgressBar
 Flexible Progress Bar for Excel
 
+![gif](https://i.stack.imgur.com/8dnl6.gif)
+
 Related [Code Review question](https://codereview.stackexchange.com/questions/273741/progress-bar-for-excel)
 
 The Progress Bar from this project has the following features:
