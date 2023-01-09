@@ -560,7 +560,11 @@ Private Sub RunOnBook(Optional ByVal Missing As Variant)
         , m_args(25), m_args(26), m_args(27), m_args(28), m_args(29))
 End Sub
 Private Function FullProcedureName() As String
-    FullProcedureName = "'" & Replace(m_targetBook.Name, "'", "''") & "'!" & m_procedure
+    If m_targetBook Is ThisWorkbook Then 'No need to qualify book. Default is always ThisWB
+        FullProcedureName = m_procedure
+    Else
+        FullProcedureName = "'" & Replace(m_targetBook.Name, "'", "''") & "'!" & m_procedure
+    End If
 End Function
 #If Mac Then
 Private Sub RunOnObject(ByRef args() As Variant)
