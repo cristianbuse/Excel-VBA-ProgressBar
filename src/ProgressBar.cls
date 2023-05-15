@@ -572,7 +572,7 @@ Private Sub RunOnObject(ByRef args() As Variant)
     Dim p As String: p = m_procedure
     Dim v As VbCallType: v = VbMethod
     '
-    Select Case UBound(args) - LBound(args) + 1
+    Select Case UBound(args) - (LBound(args) + 1)
     Case 0: LetSet(m_result) = CallByName(o, p, v)
     Case 1: LetSet(m_result) = CallByName(o, p, v, args(0))
     Case 2: LetSet(m_result) = CallByName(o, p, v, args(0), args(1))
