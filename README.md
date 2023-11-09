@@ -37,20 +37,6 @@ Just import the following code modules in your VBA Project:
           RaiseEvent QueryClose(Cancel, CloseMode)
       End Sub
       ```
-      
- You will also need:
-* **LibMemory** from the [submodules folder](https://github.com/cristianbuse/Excel-VBA-ProgressBar/tree/master/submodules) or you can try the latest version [here](https://github.com/cristianbuse/VBA-MemoryTools/blob/master/src/LibMemory.bas)
-
-Note that ```LibMemory``` is not available in the Zip download. If cloning via GitHub Desktop the submodule will be pulled automatically by default. If cloning via Git Bash then use something like:
-```
-$ git clone https://github.com/cristianbuse/Excel-VBA-ProgressBar
-$ git submodule init
-$ git submodule update
-```
-or:
-```
-$ git clone --recurse-submodules https://github.com/cristianbuse/Excel-VBA-ProgressBar
-```
 
 ## Demo
 

@@ -37,6 +37,21 @@ Attribute VB_Exposed = False
 
 Option Explicit
 
+#If Mac Then
+    #If VBA7 Then
+        Private Declare PtrSafe Function CopyMemory Lib "/usr/lib/libc.dylib" Alias "memmove" (Destination As Any, Source As Any, ByVal Length As LongPtr) As LongPtr
+    #Else
+        Private Declare Function CopyMemory Lib "/usr/lib/libc.dylib" Alias "memmove" (Destination As Any, Source As Any, ByVal Length As Long) As Long
+    #End If
+#Else 'Windows
+    'https://msdn.microsoft.com/en-us/library/mt723419(v=vs.85).aspx
+    #If VBA7 Then
+        Private Declare PtrSafe Sub CopyMemory Lib "kernel32" Alias "RtlMoveMemory" (Destination As Any, Source As Any, ByVal Length As LongPtr)
+    #Else
+        Private Declare Sub CopyMemory Lib "kernel32" Alias "RtlMoveMemory" (Destination As Any, Source As Any, ByVal Length As Long)
+    #End If
+#End If
+
 Private WithEvents m_form As ProgressForm
 Attribute m_form.VB_VarHelpID = -1
 Private m_allowCancel As Boolean
@@ -448,7 +463,7 @@ Public Function RunMacro(ByVal targetBook As Workbook _
     ElseIf targetBook Is Nothing Then
         Err.Raise 91, methodName, "Workbook not set"
     ElseIf UBound(args) >= LBound(args) Then 'Save arguments for async use
-        CloneParamArray args(0), UBound(args) + 1, m_args 'ByRef is preserved!
+        CloneParamArray Not Not args, m_args 'ByRef is preserved!
     Else
         m_args = Array()
     End If
@@ -470,13 +485,25 @@ Public Function RunObjMethod(ByVal targetObject As Object _
     ElseIf targetObject Is Nothing Then
         Err.Raise 91, methodName, "Object not set"
     ElseIf UBound(args) >= LBound(args) Then 'Save arguments for async use
-        CloneParamArray args(0), UBound(args) + 1, m_args 'ByRef is preserved!
+        CloneParamArray Not Not args, m_args 'ByRef is preserved!
     Else
         m_args = Array()
     End If
     '
     LetSet(RunObjMethod) = Run(procedure, Nothing, targetObject)
 End Function
+
+'*******************************************************************************
+'Copy a param array to another array of Variants while preserving ByRef elements
+'If the paramarray name is 'args' then the call needs to look like this:
+'   CloneParamArray Not Not args, outArray
+'*******************************************************************************
+Private Sub CloneParamArray(ByVal paramPtr As LongPtr, ByRef out() As Variant)
+    Dim v As Variant: v = paramPtr
+    CopyMemory ByVal VarPtr(v), vbArray + vbVariant, 2
+    out = v
+    CopyMemory ByVal VarPtr(v), vbEmpty, 2
+End Sub
 
 '*******************************************************************************
 'Runs a method:
